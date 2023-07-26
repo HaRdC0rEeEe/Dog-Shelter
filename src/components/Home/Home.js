@@ -39,6 +39,8 @@ const Home = () => {
 
     function handleAdd() {
 
+        // spread operátor (...) k vytvoření nového pole,
+        // do kterého zkopíruje všechny prvky ze stávajícího seznamu psů.
         setListOfDogs((listOfDogs) => {
             //vrácení nového listu + v něm newDog
             return [...listOfDogs, newDog];

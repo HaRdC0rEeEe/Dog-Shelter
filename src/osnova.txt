@@ -1,0 +1,126 @@
+1. Vytvoření React app
+	npx create-react-app jmeno-aplikace
+
+	Web dev Simplified - Youtube
+	https://www.youtube.com/watch?v=kvkAoCbTM3Q&t=80s
+
+2. nainstalovat Styled Components
+	https://www.npmjs.com/
+
+	npm i styled-components
+
+3. úprava souborů
+
+	- App.js (vymazat import loga, css)
+		vymazali jsme vnitřek return a nahradili
+		fragmentem <></>
+	- složka components/Home
+	- vytrvoření souborů Home.js a HomeStyles.js
+	- do index.css přidat 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+	- do App.js naimportovat Home z components/Home/Home
+	- v src složce soubor dogsData.js
+	- v Home.js
+		import { dogs } from '../../dogsData';
+
+4. vytvoření stylované komponenty PageContainer
+
+5. import { PageContainer } from './HomeStyles';
+	v Home.js
+
+6. vytvoření st. komp. DogList, DogItem
+
+7. v Home.js
+	import { useState } from 'react';
+
+	- stavová proměnná listOfDogs
+	const [listOfDogs, setListOfDogs] = useState(dogs);
+
+8. výpis psů do komponent
+
+9. vytvoření formuláře pomocí st. komp. DogForm,Input a 	Button
+	- DogForm->Input, Button
+
+10. vytvoříme si nový objekt - stavová proměnná newDog
+	const [newDog, setNewDog] = useState({
+        id: (listOfDogs.length > 0 ? Math.max(...listOfDogs.map(dog => dog.id)) + 1 : 1),
+        name: "",
+        race: "",
+        age: ""});
+
+11. nastavili jsme atribut value v jednotlivých inputech na hodnoty 	vlastností objektu newDog
+	např.: value={newDog.age}
+
+12. const [valid, setValid] = useState(false);
+	proměnná, která nese hodnotu správnosti dat v inputech 
+
+13. funkce validateData
+
+	const validateData = (dog) => kontrola, zda je věk nezáporný, větší 	než 24 let, prázdný string... u jména a rasy nesmí být prázdný 	string ani po ořezání vnějších mezer
+
+14. přidáme komponentě Button atribut disabled={!valid}
+
+15. funkce handleChange, která nastavuje hodnoty proměnné newDog, spoští se 	událostí onChange
+
+	- na inputech onChang={handleChange}
+
+	- const handleChange = (event) => {
+	    const updatedDog = { ...newDog, [e.target.name]: e.target.value };
+            setNewDog(updatedDog);
+            validateData(updatedDog);
+		
+	};
+
+16. funkce handleAdd = () => {
+            setListOfDogs((listOfDogs) => {
+                return [...listOfDogs, newDog];
+            });
+            const newDogId = newDog.id + 1;
+            const updatedDog = {
+                id: newDogId,
+                name: "",
+                race: "",
+                age: ""
+            }
+            setNewDog(updatedDog);
+            setValid(false);
+        }
+
+	Funkce handleAdd se spustí klikem na tlačítko "Přidat" pomocí 	atributu onClick={handleAdd}
+	- updatuje hodnotu pole objektů listOfDogs - vezme si původní 		listOfDogs a přidá do něj newDog - pomocí spread operátoru
+	- dočasná proměnná updateDog s id o jedno vyšší než předchozí  		newDog a ostatními vlastnostmi jako prázdný string
+	- toto jsme dali jako parametr setNewDog(updatedDog) - vyresetují 		se inputy
+
+17. můžeme použít hook useRef
+	https://www.smashingmagazine.com/2020/11/react-useref-hook/
+
+	- const dogsCount = useRef(dogs.length);
+
+	- const handleAdd = () => {
+            setListOfDogs((listOfDogs) => {
+                return [...listOfDogs, newDog];
+            });
+            dogsCount.current++;
+            const updatedDog = {
+                id: (dogsCount.current + 1),
+                name: "",
+                race: "",
+                age: ""
+            }
+            setNewDog(updatedDog);
+            validateData(updatedDog);
+        }
+
+	- const [addDog, setAddDog] = useState({
+            id: (dogsCount.current + 1),
+            name: "",
+            race: "",
+            age: ""
+        });
+	
+
+
